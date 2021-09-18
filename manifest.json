@@ -1,7 +1,7 @@
 {
   "id": "obsidian-audio-speed-plugin",
   "name": "Audio Speed Plugin",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "minAppVersion": "0.10.2",
   "description": "Change the playback rate of audio files during markdown preview.",
   "author": "kaizau",
