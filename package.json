@@ -1,14 +1,18 @@
 {
-  "name": "obsidian-sample-plugin",
-  "version": "0.12.0",
-  "description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+  "name": "obsidian-audio-speed-plugin",
+  "version": "0.0.1",
+  "description": "An Obsidian plugin to change the playback rate of audio files during markdown preview.",
   "main": "main.js",
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js --environment BUILD:production"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Kai Zau",
+    "email": "k@kaizau.com",
+    "url": "https://kaizau.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^18.0.0",

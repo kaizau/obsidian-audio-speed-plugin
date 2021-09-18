@@ -1,6 +1,6 @@
-# Audio Speed Plugin
+# Obsidian Audio Speed Plugin
 
-An [Obsidian](https://obsidian.md) plugin for changing the playback rate of audio in the preview pane.
+An [Obsidian](https://obsidian.md) plugin to change the playback rate of audio files during markdown preview.
 
 ## Install
 
