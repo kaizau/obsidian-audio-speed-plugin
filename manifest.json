@@ -3,7 +3,7 @@
   "name": "Audio Speed Plugin",
   "version": "0.0.1",
   "minAppVersion": "0.10.2",
-  "description": "Change the playback rate of audio files during markdown preview.",
+  "description": "A simple plugin to change the playback rate of audio files during markdown preview.",
   "author": "kaizau",
   "authorUrl": "https://github.com/kaizau",
   "isDesktopOnly": false

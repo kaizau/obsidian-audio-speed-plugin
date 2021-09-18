@@ -1,7 +1,7 @@
 {
   "name": "obsidian-audio-speed-plugin",
   "version": "0.0.1",
-  "description": "An Obsidian plugin to change the playback rate of audio files during markdown preview.",
+  "description": "A simple Obsidian plugin to change the playback rate of audio files during markdown preview.",
   "main": "main.js",
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
