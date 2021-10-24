@@ -25,29 +25,29 @@ export default class AudioSpeedPlugin extends Plugin {
     this.addSettingTab(new AudioSpeedSettingTab(this.app, this));
 
     this.registerMarkdownPostProcessor((el, ctx) => {
-      const embedElements = el.querySelectorAll(".internal-embed");
-      embedElements.forEach((embedEl) => {
+      // Audio elements are dynamically injected after post-processors are
+      // registered, so we need to detect them by src extensions.
+      const embedElements = Array.from(el.querySelectorAll(".internal-embed"));
+      const audioElements = embedElements.filter((embedEl) => {
         const src = embedEl.getAttribute("src");
         if (!src) return;
-
         const ext = src.split(".").pop();
-        if (!audioExtensions.includes(ext)) return;
-
-        const file = this.app.metadataCache.getFirstLinkpathDest(
-          src,
-          ctx.sourcePath
-        );
-        const filePath = file.vault.getResourcePath(file);
-
-        const audioEl = document.createElement("audio");
-        audioEl.setAttribute("src", filePath);
-        audioEl.controls = true;
-        audioEl.playbackRate = this.settings.speed;
-
-        embedEl.innerHTML = "";
-        embedEl.appendChild(audioEl);
-        embedEl.className += " media-embed is-loaded audio-speed-plugin";
+        return audioExtensions.includes(ext);
       });
+
+      // If found, wait for the <audio> elements to appear before updating the
+      // playbackRate. 500ms is a compromise magic number.
+      if (audioElements.length) {
+        setTimeout(() => {
+          audioElements.forEach((spanEl) => {
+            const audioEl = spanEl.querySelector("audio");
+            if (audioEl) {
+              audioEl.playbackRate = this.settings.speed;
+              spanEl.classList.add("audio-speed-plugin");
+            }
+          });
+        }, 500);
+      }
     });
   }
 
@@ -75,14 +75,19 @@ class AudioSpeedSettingTab extends PluginSettingTab {
 
     containerEl.createEl("h2", { text: "Audio Speed Settings" });
 
-    new Setting(containerEl).setName("Audio Playback Speed").addText((text) =>
-      text
-        .setPlaceholder("2.0")
-        .setValue(this.plugin.settings?.speed + "" || "")
-        .onChange(async (value) => {
-          const speed = parseFloat(value);
-          this.plugin.settings.speed = Number.isNaN(speed) ? 2.0 : speed;
+    const setting = new Setting(containerEl)
+      .setName("Audio Playback Speed")
+      .setDesc(`Current: ${this.plugin.settings.speed}x`);
+
+    setting.addSlider((slider) =>
+      slider
+        .setLimits(0.5, 3.0, 0.1)
+        .setValue(this.plugin.settings.speed)
+        .onChange(async (speed: number) => {
+          this.plugin.settings.speed = speed;
           await this.plugin.saveSettings();
+          slider.setDynamicTooltip();
+          setting.setDesc(`Current: ${this.plugin.settings.speed}x`);
         })
     );
   }
